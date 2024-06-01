@@ -4,7 +4,8 @@ import { Dialog } from 'primereact/dialog';
 import { InputText } from "primereact/inputtext";
 import { InputTextarea } from 'primereact/inputtextarea';
 import { useState } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
+import { useBuscarTarefas, useCriarTarefa } from "../../../hooks/tarefaHooks";
         
         
 
@@ -16,6 +17,14 @@ const Home = () => {
 
     const [visibleDialog, setVisibleDialog] = useState(false);
     const { register, handleSubmit } = useForm();
+    const { data: tarefas, isFetched } = useBuscarTarefas();
+    const { mutateAsync: handleCriar } = useCriarTarefa();
+
+    const criarTarefa = (dados) => {
+        console.log(dados);
+    }
+
+
 
     return ( 
         <HomeConatainer className="px-8 py-6">
@@ -27,6 +36,11 @@ const Home = () => {
                     onClick={() => setVisibleDialog(true)}
                 />
             </h1>
+            {
+               isFetched && tarefas.map(tarefa => (
+                    <div key={tarefa.id}>{tarefa.titulo}</div>
+                ))
+            }
 
             <Dialog 
                 visible= {visibleDialog}
